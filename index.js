@@ -12,8 +12,6 @@ console.log('Making a request to: ' + requestURL);
 request(requestURL, function(err, res, body){
 
 	if(err) {
-		console.log('Something went miss getting: ' + requestURL);
-		console.log('Here is the error log: ');
 		console.log(err);
 		return;
 	}
@@ -26,8 +24,34 @@ request(requestURL, function(err, res, body){
 			fs.mkdirSync(destinationDir);
 		}
 
-		//Some script and CSS replacement need to be done here.
+		//Getting all the scripts
+		$('script').each(function(){
+			var source = $(this).attr('src');
 
+			//Need to do a check for HTTP. indexOf doesn't seem to work..
+			request(requestURL + source, function(err, res, body){
+				if(err) {
+					console.log(err);
+					return;
+				}
+
+				console.log('Saving ' + source + '..');
+
+				if(res.statusCode == 200){
+
+					//Writing each script to our directory
+					fs.writeFile(destinationDir + '/' + source, body, function(err){
+						if(err) {
+							console.log(err);
+							return;
+						}
+					})
+				}
+			});
+
+		});
+
+		//Last but not least write the html page.
 		fs.writeFile(destinationDir + '/index.html', body, function(err){
 			if (err) {
 				console.log(err);
