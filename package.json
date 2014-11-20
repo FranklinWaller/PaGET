@@ -1,0 +1,27 @@
+{
+  "name": "PaGET",
+  "version": "1.0.0",
+  "description": "A page downloader",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://FranklinWaller@github.com/FranklinWaller/PaGET.git"
+  },
+  "keywords": [
+    "page",
+    "get",
+    "downloader",
+    "website",
+    "web"
+  ],
+  "dependencies": {
+    "cheerio": "0.18.0",
+    "request": "2.48.0"
+  },
+  "author": "Franklin Waller",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FranklinWaller/PaGET/issues"
+  },
+  "homepage": "https://github.com/FranklinWaller/PaGET"
+}
