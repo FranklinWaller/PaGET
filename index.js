@@ -1,7 +1,12 @@
 var request = require('request'),
     cheerio = require('cheerio'),
-    fs = require('fs');
+    fs = require('fs'),
+    paget = require('./src/paget');
 
+if(process.argv[2] == null){
+    console.log('No URL given');
+    process.exit(1);
+}
 
 var requestURL = process.argv[2],
         destinationDir = './page';
@@ -24,6 +29,13 @@ request(requestURL, function(err, res, body) {
             fs.mkdirSync(destinationDir);
         }
 
+        $('link').each(function(){
+            var source = $(this).attr('href');
+
+            paget.downloadResource(source, requestURL, destinationDir);
+        });
+
+        /*
         //Getting all the scripts
         $('script').each(function() {
             var source = $(this).attr('src');
@@ -48,7 +60,11 @@ request(requestURL, function(err, res, body) {
                     });
                 }
             });
-        });
+        });*/
+
+
+
+        body = paget.injectScript(body, destinationDir);
 
         //Last but not least write the html page.
         fs.writeFile(destinationDir + '/index.html', body, function(err) {
@@ -57,7 +73,7 @@ request(requestURL, function(err, res, body) {
                 return;
             }
 
-            console.log('File was saved.');
+            console.log('index.html was saved.');
         });
     }
 });
